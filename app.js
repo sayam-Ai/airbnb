@@ -1,6 +1,7 @@
 // Core Module
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 
 // External Module
 require("dotenv").config({ path: path.join(__dirname, ".env") });
@@ -34,9 +35,15 @@ const errorsController = require("./controllers/errors");
 const { default: mongoose } = require("mongoose");
 
 const app = express();
-const uploadDir = path.join(rootDir, "uploads");
+const uploadDir = process.env.VERCEL
+  ? path.join(os.tmpdir(), "uploads")
+  : path.join(rootDir, "uploads");
 
-fs.mkdirSync(uploadDir, { recursive: true });
+try {
+  fs.mkdirSync(uploadDir, { recursive: true });
+} catch (err) {
+  console.log("Could not create upload dir:", err.message);
+}
 
 app.set("view engine", "ejs");
 app.set("views", "views");
