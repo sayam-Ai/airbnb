@@ -6,7 +6,7 @@ exports.getIndex = async (req, res, next) => {
   try {
     const registeredHomes = await Home.find();
     res.render("store/index", {
-      registeredHomes: registeredHomes.length ? registeredHomes : sampleHomes,
+      registeredHomes: [...sampleHomes, ...registeredHomes],
       pageTitle: "airbnb Home",
       currentPage: "index",
       isLoggedIn: req.isLoggedIn,
