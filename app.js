@@ -3,12 +3,27 @@ const path = require("path");
 const fs = require("fs");
 
 // External Module
+require("dotenv").config({ path: path.join(__dirname, ".env") });
+
 const express = require("express");
 const session = require("express-session");
 const multer = require("multer");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const DB_PATH =
-  "mongodb+srv://sayampadwe1309_db_user:Sayam1318@sayam-mongodb.tqi31t0.mongodb.net/airbnb";
+const MONGODB_URI = process.env.MONGODB_URI;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const PORT = process.env.PORT || 3000;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    "MONGODB_URI is required. Set it in the environment or .env file.",
+  );
+}
+
+if (!SESSION_SECRET) {
+  throw new Error(
+    "SESSION_SECRET is required. Set it in the environment or .env file.",
+  );
+}
 
 //Local Module
 const storeRouter = require("./routes/storeRouter");
@@ -55,7 +70,7 @@ const fileFilter = (req, file, cb) => {
 const multerOptions = { storage, fileFilter };
 
 const store = new MongoDBStore({
-  uri: DB_PATH,
+  uri: MONGODB_URI,
   collection: "sessions",
 });
 
@@ -66,7 +81,7 @@ app.use("/uploads", express.static(uploadDir));
 
 app.use(
   session({
-    secret: "KnowledgeGate AI with Complete Coding",
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store,
@@ -92,10 +107,8 @@ app.use("/host", hostRouter);
 
 app.use(errorsController.pageNotFound);
 
-const PORT = 3000;
-
 mongoose
-  .connect(DB_PATH)
+  .connect(MONGODB_URI)
   .then(() => {
     console.log("Connected to Mongo");
     app.listen(PORT, () => {

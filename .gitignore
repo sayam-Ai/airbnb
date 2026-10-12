@@ -1,18 +1,18 @@
-# folders (trailing slash)
+# Dependencies and generated files
 node_modules/
 venv/
 dist/
+uploads/
 
-# specific files
-.env
-config/secrets.json
-
-# every file with an extension
-*.log
-*.sqlite
-
-# comments start with #
-
-# exception: ignore all .env files except the example
+# Local environment files (commit only the documented template)
 .env*
 !.env.example
+config/secrets.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs and local databases
+*.log
+*.sqlite
