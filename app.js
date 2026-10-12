@@ -33,6 +33,7 @@ const authRouter = require("./routes/authRouter");
 const rootDir = require("./utils/pathUtil");
 const errorsController = require("./controllers/errors");
 const { default: mongoose } = require("mongoose");
+const seedSampleHomes = require("./data/seedSampleHomes");
 
 const app = express();
 const uploadDir = process.env.VERCEL
@@ -116,8 +117,10 @@ app.use(errorsController.pageNotFound);
 
 mongoose
   .connect(MONGODB_URI)
-  .then(() => {
+  .then(async () => {
     console.log("Connected to Mongo");
+    await seedSampleHomes();
+    console.log("Sample homes are ready");
     app.listen(PORT, () => {
       console.log(`Server running on address http://localhost:${PORT}`);
     });

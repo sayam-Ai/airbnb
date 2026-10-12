@@ -1,12 +1,11 @@
 const Home = require("../models/home");
 const User = require("../models/user");
-const sampleHomes = require("../data/sampleHomes");
 
 exports.getIndex = async (req, res, next) => {
   try {
     const registeredHomes = await Home.find();
     res.render("store/index", {
-      registeredHomes: [...sampleHomes, ...registeredHomes],
+      registeredHomes,
       pageTitle: "airbnb Home",
       currentPage: "index",
       isLoggedIn: req.isLoggedIn,
