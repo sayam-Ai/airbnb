@@ -1,0 +1,18 @@
+# folders (trailing slash)
+node_modules/
+venv/
+dist/
+
+# specific files
+.env
+config/secrets.json
+
+# every file with an extension
+*.log
+*.sqlite
+
+# comments start with #
+
+# exception: ignore all .env files except the example
+.env*
+!.env.example
